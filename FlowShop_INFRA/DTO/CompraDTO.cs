@@ -1,23 +1,19 @@
-﻿using System;
+﻿using FlowShop_INFRA.Entity;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace FlowShop_INFRA.Entity
+namespace FlowShop_INFRA.DTO
 {
-    [Table("COMPRA")]
-    public class CompraEntity
+    public class CompraDTO
     {
-        [Key]
         public int COD_COMPRA { get; set; }
         public string TITULO { get; set; }
         public string DESCRICAO { get; set; }
-        public int COD_STATUS { get; set; }
+        public StatusEntity STATUS { get; set; }
         public DateTime DATA { get; set; }
-        public int COD_USUARIO { get; set; }
+        public UsuarioEntity USUARIO { get; set; }
         public bool APROVADO { get; set; }
         public bool FINALIZADO { get; set; }
-
     }
 }
