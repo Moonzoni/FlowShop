@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FlowShop_INFRA.Interface
 {
-    interface IStatusRepository: IBaseRepository<StatusEntity>
+    public interface IStatusRepository: IBaseRepository<StatusEntity>
     {
     }
 }
