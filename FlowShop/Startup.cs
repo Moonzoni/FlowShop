@@ -52,6 +52,7 @@ namespace FlowShop
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(ICategoriaRepository), typeof(CategoriaRepository));
             //services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
+            //services.AddScoped(typeof(IStatusRepository), typeof(StatusRepository));
 
         }
 
@@ -62,14 +63,16 @@ namespace FlowShop
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+
+                c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "Minha API");
+            });
         }
     }
 }
