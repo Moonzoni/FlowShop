@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlowShop_INFRA.Entity;
+using FlowShop_INFRA.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,37 +14,62 @@ namespace FlowShop.Controllers
     public class CategoriaController : ControllerBase
     {
 
-        //private readonly ICategoria
+        private readonly ICategoriaRepository _categoriaRepository;
+
+        public CategoriaController(ICategoriaRepository categoriaRepository)
+        {
+            _categoriaRepository = categoriaRepository;
+        }
         // GET: api/Categoria
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<CategoriaEntity> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _categoriaRepository.GetAll();
         }
 
         // GET: api/Categoria/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{id}")]
+        public CategoriaEntity Get(int id)
         {
-            return "value";
+            return _categoriaRepository.Get(id);
         }
 
         // POST: api/Categoria
         [HttpPost]
-        public void Post([FromBody] string value)
+        public CategoriaEntity Post([FromBody] CategoriaEntity categoria)
         {
+            return _categoriaRepository.Add(categoria);
         }
 
         // PUT: api/Categoria/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        public ActionResult<CategoriaEntity> Put([FromBody] CategoriaEntity categoriaEntity)
         {
+            try
+            {
+                return new OkObjectResult(_categoriaRepository.Update(categoriaEntity));
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    Status = false,
+                    Message = e.Message,
+                    Stack = e.StackTrace,
+                    Description = "Erro"
+
+                });
+
+            }
         }
+       
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _categoriaRepository.Delete(id);
         }
     }
 }
