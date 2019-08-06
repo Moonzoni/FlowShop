@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FlowShop_INFRA.Context;
+using FlowShop_INFRA.Interface;
+using FlowShop_INFRA.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -46,6 +48,11 @@ namespace FlowShop
                     Version = "1.0.1"
                 });
             });
+
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped(typeof(ICategoriaRepository), typeof(CategoriaRepository));
+            //services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
