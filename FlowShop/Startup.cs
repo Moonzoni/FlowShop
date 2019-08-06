@@ -51,8 +51,9 @@ namespace FlowShop
 
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(ICategoriaRepository), typeof(CategoriaRepository));
-            //services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
-            //services.AddScoped(typeof(IStatusRepository), typeof(StatusRepository));
+            services.AddScoped(typeof(IPerfilRepository), typeof(PerfilRepository));
+            services.AddScoped(typeof(IStatusRepository), typeof(StatusRepository));
+            services.AddScoped(typeof(IUsuarioRepository), typeof(UsuarioRepository));
 
         }
 

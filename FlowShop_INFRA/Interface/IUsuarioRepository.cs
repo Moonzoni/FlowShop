@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FlowShop_INFRA.Interface
 {
-    interface IUsuarioRepository: IBaseRepository<UsuarioEntity>
+    public interface IUsuarioRepository: IBaseRepository<UsuarioEntity>
     {
     }
 }
