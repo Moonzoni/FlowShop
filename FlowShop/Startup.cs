@@ -28,12 +28,24 @@ namespace FlowShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //Comunicação com o bando de dados SQL//
+
             services.AddDbContext<FlowShopContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("FlowShop"));
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //Configuração do Swagger//
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info()
+                {
+                    Description = "API Baixada",
+                    Title = "FlowShop dus gurí",
+                    Version = "1.0.1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
