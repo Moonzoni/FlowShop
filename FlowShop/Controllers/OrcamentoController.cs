@@ -22,7 +22,7 @@ namespace FlowShop.Controllers
         [HttpGet]
         public IEnumerable<OrcamentoEntity> Get()
         {
-            return _orcamentoRepository.GetAll(); ;
+            return _orcamentoRepository.GetAll(); 
         }
 
 

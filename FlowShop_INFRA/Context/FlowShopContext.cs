@@ -28,7 +28,7 @@ namespace FlowShop_INFRA.Context
                 .HasKey(x => x.COD_CATEGORIA);
             modelBuilder.Entity<CompraEntity>()
                 .HasKey(x => x.COD_COMPRA);
-            modelBuilder.Entity<OrcamentoEntity>()
+             modelBuilder.Entity<OrcamentoEntity>()
                 .HasKey(x => x.COD_ORCAMENTO);
             modelBuilder.Entity<UsuarioEntity>()
                 .HasKey(x => x.COD_USUARIO);
