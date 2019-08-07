@@ -9,6 +9,7 @@ namespace FlowShop_INFRA.DTO
     {
         public int COD_ORCAMENTO { get; set; }
         public string NOME { get; set; }
+        public string LINK { get; set; }
         public CategoriaEntity CATEGORIA  { get; set; }
         public CompraEntity COMPRA { get; set; }
     }

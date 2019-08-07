@@ -14,6 +14,5 @@ namespace FlowShop_INFRA.Entity
         public string NOME { get; set; }
         public string EMAIL { get; set; }
         public int COD_PERFIL { get; set; }
-        
     }
 }
