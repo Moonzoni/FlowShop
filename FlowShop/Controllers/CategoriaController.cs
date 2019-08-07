@@ -58,12 +58,9 @@ namespace FlowShop.Controllers
                     Message = e.Message,
                     Stack = e.StackTrace,
                     Description = "Erro"
-
                 });
-
             }
         }
-       
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]

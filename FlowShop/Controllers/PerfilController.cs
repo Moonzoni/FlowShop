@@ -25,7 +25,6 @@ namespace FlowShop.Controllers
         {
             return _perfilRepository.GetAll(); ;
         }
-        
 
         // GET: api/Perfil/5
         [HttpGet("{id}")]
@@ -59,9 +58,7 @@ namespace FlowShop.Controllers
                     Description = "Errou"
                 });
             }
-
         }
-
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
