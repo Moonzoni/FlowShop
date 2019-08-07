@@ -16,9 +16,8 @@ namespace FlowShop_INFRA.Repository
         }
 
         public List<CompraEntity> GetStatus(int id)
-        {
-            var list = _flowShopContext.wherer<CompraEntity>().
-            return 
+        {   
+            return null;
         }
 
 
