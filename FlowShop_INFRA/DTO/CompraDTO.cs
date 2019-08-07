@@ -11,9 +11,9 @@ namespace FlowShop_INFRA.DTO
         public string TITULO { get; set; }
         public string DESCRICAO { get; set; }
         public StatusEntity STATUS { get; set; }
-        public DateTime DATA { get; set; }
+        public DateTime DATA_SOLICITACAO { get; set; }
         public UsuarioEntity USUARIO { get; set; }
-        public bool APROVADO { get; set; }
+        public bool? APROVADO { get; set; }
         public bool FINALIZADO { get; set; }
     }
 }

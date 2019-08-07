@@ -5,21 +5,26 @@ using FlowShop_INFRA.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace FlowShop_INFRA.Repository
 {
     public class CompraRepository: BaseRepository<CompraEntity>, ICompraRepository
     {
-        protected readonly FlowShopContext _flowShopContext;
+        
         public CompraRepository(FlowShopContext baseContext) : base(baseContext)
-        {            
+        {       
+            
+
         }
 
-        public List<CompraEntity> GetStatus(int id)
-        {   
-            return null;
+        public IEnumerable<CompraEntity> GetCompraByStatus(int id)
+        {
+            return _baseContext.Set<CompraEntity>().Where(x => x.COD_STATUS == id).ToList();
         }
 
-
+        
     }
+    
+
 }

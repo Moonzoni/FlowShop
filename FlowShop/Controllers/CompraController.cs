@@ -17,6 +17,7 @@ namespace FlowShop.Controllers
         private readonly ICompraRepository _compraRepository;
         private readonly IStatusRepository _statusRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        
         public CompraController(ICompraRepository compraRepository, 
             IStatusRepository statusRepository,
             IUsuarioRepository usuarioRepository)
@@ -33,7 +34,7 @@ namespace FlowShop.Controllers
             {
                 APROVADO = x.APROVADO,
                 COD_COMPRA = x.COD_COMPRA,
-                DATA = x.DATA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
                 DESCRICAO = x.DESCRICAO,
                 FINALIZADO = x.FINALIZADO,
                 STATUS = _statusRepository.Get(x.COD_STATUS),
@@ -52,7 +53,7 @@ namespace FlowShop.Controllers
             {
                 APROVADO = compra.APROVADO,
                 COD_COMPRA = compra.COD_COMPRA,
-                DATA = compra.DATA,
+                DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
                 DESCRICAO = compra.DESCRICAO,
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
@@ -61,19 +62,36 @@ namespace FlowShop.Controllers
             };
         }
 
+        [HttpGet("Status/{stat}")]
+        public IEnumerable<CompraDTO> GetCombraByStatus(int stat)
+        {
+             
+            return _compraRepository.GetCompraByStatus(stat).Select(x => new CompraDTO()
+            {
+                APROVADO = x.APROVADO,
+                COD_COMPRA = x.COD_COMPRA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
+                DESCRICAO = x.DESCRICAO,
+                FINALIZADO = x.FINALIZADO,
+                TITULO = x.TITULO,
+                STATUS = _statusRepository.Get(x.COD_STATUS),
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO)
+            });
+        }
+
         // POST: api/Compra
         [HttpPost]
-        public CompraDTO Post([FromBody] CompraDTO compra)
+        public CompraEntity Post([FromBody] CompraEntity compra)
         {
             var comp = new CompraEntity()
             {
                 APROVADO = compra.APROVADO,               
-                DATA = compra.DATA,
+                DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
                 DESCRICAO = compra.DESCRICAO,
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
-                COD_USUARIO = compra.USUARIO.COD_USUARIO,
-                COD_STATUS = compra.STATUS.COD_STATUS
+                COD_USUARIO = compra.COD_USUARIO,
+                COD_STATUS = compra.COD_STATUS
             };
 
             var newComp = _compraRepository.Add(comp);
@@ -90,7 +108,7 @@ namespace FlowShop.Controllers
             {
                 APROVADO = compra.APROVADO,
                 COD_COMPRA = compra.COD_COMPRA,
-                DATA = compra.DATA,
+                DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
                 DESCRICAO = compra.DESCRICAO,
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
