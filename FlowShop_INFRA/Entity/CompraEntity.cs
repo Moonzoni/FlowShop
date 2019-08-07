@@ -14,9 +14,9 @@ namespace FlowShop_INFRA.Entity
         public string TITULO { get; set; }
         public string DESCRICAO { get; set; }
         public int COD_STATUS { get; set; }
-        public DateTime DATA { get; set; }
+        public DateTime DATA_SOLICITACAO { get; set; }
         public int COD_USUARIO { get; set; }
-        public bool APROVADO { get; set; }
+        public bool? APROVADO { get; set; }
         public bool FINALIZADO { get; set; }
 
     }
