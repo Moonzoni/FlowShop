@@ -7,5 +7,8 @@ namespace FlowShop_INFRA.Interface
 {
     public interface IUsuarioRepository: IBaseRepository<UsuarioEntity>
     {
+        IEnumerable<UsuarioEntity> GetUsuarioPorPerfil(int id);
     }
+
+    
 }

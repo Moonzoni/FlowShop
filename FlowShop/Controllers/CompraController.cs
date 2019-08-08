@@ -18,12 +18,15 @@ namespace FlowShop.Controllers
         private readonly IStatusRepository _statusRepository;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly ICategoriaRepository _categoriaRepository;
+        private readonly IOrcamentoRepository _orcamentoRepository;
 
         public CompraController(ICompraRepository compraRepository, 
             IStatusRepository statusRepository,
             IUsuarioRepository usuarioRepository,
-            ICategoriaRepository categoriaRepository)
+            ICategoriaRepository categoriaRepository,
+            IOrcamentoRepository orcamentoRepository)
         {
+            _orcamentoRepository = orcamentoRepository;
             _statusRepository = statusRepository;
             _usuarioRepository = usuarioRepository;
             _compraRepository = compraRepository;
@@ -43,7 +46,9 @@ namespace FlowShop.Controllers
                 STATUS = _statusRepository.Get(x.COD_STATUS),
                 USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
                 TITULO = x.TITULO,
-                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA),
+                ORCAMENTO = _orcamentoRepository.GetOrcamentoByCompra(x.COD_COMPRA).ToList()
+
             });
         }
 
@@ -62,7 +67,9 @@ namespace FlowShop.Controllers
                 TITULO = compra.TITULO,
                 STATUS = _statusRepository.Get(compra.COD_STATUS),
                 USUARIO = _usuarioRepository.Get(compra.COD_USUARIO),
-                CATEGORIA = _categoriaRepository.Get(compra.COD_CATEGORIA)
+                CATEGORIA = _categoriaRepository.Get(compra.COD_CATEGORIA),
+                ORCAMENTO = _orcamentoRepository.GetOrcamentoByCompra(compra.COD_COMPRA).ToList()
+                
             };
         }
 
@@ -79,7 +86,8 @@ namespace FlowShop.Controllers
                 TITULO = x.TITULO,
                 STATUS = _statusRepository.Get(x.COD_STATUS),
                 USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
-                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA),
+                ORCAMENTO = _orcamentoRepository.GetOrcamentoByCompra(x.COD_COMPRA).ToList()
             });
         }
 
@@ -96,7 +104,8 @@ namespace FlowShop.Controllers
                 TITULO = x.TITULO,
                 STATUS = _statusRepository.Get(x.COD_STATUS),
                 USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
-                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA),
+                ORCAMENTO = _orcamentoRepository.GetOrcamentoByCompra(x.COD_COMPRA).ToList()
             });
         }
 
@@ -113,7 +122,8 @@ namespace FlowShop.Controllers
                 TITULO = x.TITULO,
                 STATUS = _statusRepository.Get(x.COD_STATUS),
                 USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
-                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA),
+                ORCAMENTO = _orcamentoRepository.GetOrcamentoByCompra(x.COD_COMPRA).ToList()
             });
         }
 
@@ -170,7 +180,7 @@ namespace FlowShop.Controllers
 
         // POST: api/Compra
         [HttpPost]
-        public CompraEntity Post([FromBody] CompraEntity compra)
+        public CompraDTO Post([FromBody] CompraDTO compra)
         {
             var comp = new CompraEntity()
             {
@@ -179,12 +189,19 @@ namespace FlowShop.Controllers
                 DESCRICAO = compra.DESCRICAO,
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
-                COD_USUARIO = compra.COD_USUARIO,
-                COD_STATUS = compra.COD_STATUS,
-                COD_CATEGORIA = compra.COD_CATEGORIA
+                COD_USUARIO = compra.USUARIO.COD_USUARIO,
+                COD_STATUS = compra.STATUS.COD_STATUS,
+                COD_CATEGORIA = compra.CATEGORIA.COD_CATEGORIA
             };
             var newComp = _compraRepository.Add(comp);
             compra.COD_COMPRA = newComp.COD_COMPRA;
+            for (int i = 0; i < compra.ORCAMENTO.Count; i++)
+            {
+                compra.ORCAMENTO.ToArray()[i].COD_COMPRA = compra.COD_COMPRA;
+                _orcamentoRepository.Add(compra.ORCAMENTO.ToArray()[i]);
+            }
+           
+
             return compra;
         }
 
@@ -204,6 +221,9 @@ namespace FlowShop.Controllers
                 COD_STATUS = compra.STATUS.COD_STATUS,
                 COD_CATEGORIA = compra.CATEGORIA.COD_CATEGORIA
             };
+
+
+
             _compraRepository.Update(comp);
             return compra;
         }

@@ -7,6 +7,6 @@ namespace FlowShop_INFRA.Interface
 {
     public interface IOrcamentoRepository : IBaseRepository<OrcamentoEntity>
     {
-
+        IEnumerable<OrcamentoEntity> GetOrcamentoByCompra(int id);
     }
 }
