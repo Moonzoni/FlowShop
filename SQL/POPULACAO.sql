@@ -18,5 +18,6 @@ VALUES
 ('Finalizada') -- FINALIZADO = 1
 
 
-
+/*
 select * from categoria
+*/

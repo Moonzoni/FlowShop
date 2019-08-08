@@ -17,14 +17,17 @@ namespace FlowShop.Controllers
         private readonly ICompraRepository _compraRepository;
         private readonly IStatusRepository _statusRepository;
         private readonly IUsuarioRepository _usuarioRepository;
-        
+        private readonly ICategoriaRepository _categoriaRepository;
+
         public CompraController(ICompraRepository compraRepository, 
             IStatusRepository statusRepository,
-            IUsuarioRepository usuarioRepository)
+            IUsuarioRepository usuarioRepository,
+            ICategoriaRepository categoriaRepository)
         {
             _statusRepository = statusRepository;
             _usuarioRepository = usuarioRepository;
             _compraRepository = compraRepository;
+            _categoriaRepository = categoriaRepository;
         }
         // GET: api/Compra
         [HttpGet]
@@ -39,8 +42,8 @@ namespace FlowShop.Controllers
                 FINALIZADO = x.FINALIZADO,
                 STATUS = _statusRepository.Get(x.COD_STATUS),
                 USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
-                TITULO = x.TITULO
-
+                TITULO = x.TITULO,
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
             });
         }
 
@@ -58,14 +61,14 @@ namespace FlowShop.Controllers
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
                 STATUS = _statusRepository.Get(compra.COD_STATUS),
-                USUARIO = _usuarioRepository.Get(compra.COD_USUARIO)
+                USUARIO = _usuarioRepository.Get(compra.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(compra.COD_CATEGORIA)
             };
         }
 
         [HttpGet("Status/{stat}")]
         public IEnumerable<CompraDTO> GetCombraByStatus(int stat)
         {
-             
             return _compraRepository.GetCompraByStatus(stat).Select(x => new CompraDTO()
             {
                 APROVADO = x.APROVADO,
@@ -75,7 +78,42 @@ namespace FlowShop.Controllers
                 FINALIZADO = x.FINALIZADO,
                 TITULO = x.TITULO,
                 STATUS = _statusRepository.Get(x.COD_STATUS),
-                USUARIO = _usuarioRepository.Get(x.COD_USUARIO)
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+            });
+        }
+
+        [HttpGet("Categoria/{cat}")]
+        public IEnumerable<CompraDTO> GetCombraByCategoria(int cat)
+        {
+            return _compraRepository.GetCompraByStatus(cat).Select(x => new CompraDTO()
+            {
+                APROVADO = x.APROVADO,
+                COD_COMPRA = x.COD_COMPRA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
+                DESCRICAO = x.DESCRICAO,
+                FINALIZADO = x.FINALIZADO,
+                TITULO = x.TITULO,
+                STATUS = _statusRepository.Get(x.COD_STATUS),
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+            });
+        }
+
+        [HttpGet("Descricao/{desc}")]
+        public IEnumerable<CompraDTO> GetCombraByDescricao(string desc)
+        {
+            return _compraRepository.GetCompraByDescricao(desc).Select(x => new CompraDTO()
+            {
+                APROVADO = x.APROVADO,
+                COD_COMPRA = x.COD_COMPRA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
+                DESCRICAO = x.DESCRICAO,
+                FINALIZADO = x.FINALIZADO,
+                TITULO = x.TITULO,
+                STATUS = _statusRepository.Get(x.COD_STATUS),
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
             });
         }
 
@@ -91,13 +129,12 @@ namespace FlowShop.Controllers
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
                 COD_USUARIO = compra.COD_USUARIO,
-                COD_STATUS = compra.COD_STATUS
+                COD_STATUS = compra.COD_STATUS,
+                COD_CATEGORIA = compra.COD_CATEGORIA
             };
-
             var newComp = _compraRepository.Add(comp);
             compra.COD_COMPRA = newComp.COD_COMPRA;
             return compra;
-
         }
 
         // PUT: api/Compra/5
@@ -113,12 +150,11 @@ namespace FlowShop.Controllers
                 FINALIZADO = compra.FINALIZADO,
                 TITULO = compra.TITULO,
                 COD_USUARIO = compra.USUARIO.COD_USUARIO,
-                COD_STATUS = compra.STATUS.COD_STATUS
+                COD_STATUS = compra.STATUS.COD_STATUS,
+                COD_CATEGORIA = compra.CATEGORIA.COD_CATEGORIA
             };
-
-            _compraRepository.Update(comp);            
+            _compraRepository.Update(comp);
             return compra;
-
         }
 
         // DELETE: api/ApiWithActions/5

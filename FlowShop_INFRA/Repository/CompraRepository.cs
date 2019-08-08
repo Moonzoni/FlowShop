@@ -11,11 +11,8 @@ namespace FlowShop_INFRA.Repository
 {
     public class CompraRepository: BaseRepository<CompraEntity>, ICompraRepository
     {
-        
         public CompraRepository(FlowShopContext baseContext) : base(baseContext)
         {       
-            
-
         }
 
         public IEnumerable<CompraEntity> GetCompraByStatus(int id)
@@ -23,8 +20,14 @@ namespace FlowShop_INFRA.Repository
             return _baseContext.Set<CompraEntity>().Where(x => x.COD_STATUS == id).ToList();
         }
 
-        
-    }
-    
+        public IEnumerable<CompraEntity> GetCompraByCategoria(int id)
+        {
+            return _baseContext.Set<CompraEntity>().Where(x => x.COD_CATEGORIA == id).ToList();
+        }
 
+        public IEnumerable<CompraEntity> GetCompraByDescricao(string texto)
+        {
+            return _baseContext.Set<CompraEntity>().Where(x => x.DESCRICAO.Contains(texto)).ToList();
+        }
+    }
 }

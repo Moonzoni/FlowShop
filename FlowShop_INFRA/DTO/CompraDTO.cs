@@ -15,5 +15,6 @@ namespace FlowShop_INFRA.DTO
         public UsuarioEntity USUARIO { get; set; }
         public bool? APROVADO { get; set; }
         public bool FINALIZADO { get; set; }
+        public CategoriaEntity CATEGORIA { get; set; }
     }
 }

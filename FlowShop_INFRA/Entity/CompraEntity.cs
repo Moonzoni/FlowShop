@@ -18,6 +18,7 @@ namespace FlowShop_INFRA.Entity
         public int COD_USUARIO { get; set; }
         public bool? APROVADO { get; set; }
         public bool FINALIZADO { get; set; }
+        public int COD_CATEGORIA { get; set; }
 
     }
 }

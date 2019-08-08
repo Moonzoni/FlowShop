@@ -9,6 +9,8 @@ namespace FlowShop_INFRA.Interface
     public interface ICompraRepository: IBaseRepository<CompraEntity>
     {
         IEnumerable<CompraEntity> GetCompraByStatus(int id);
+        IEnumerable<CompraEntity> GetCompraByCategoria(int id);
+        IEnumerable<CompraEntity> GetCompraByDescricao(string texto);
     }
 
 
