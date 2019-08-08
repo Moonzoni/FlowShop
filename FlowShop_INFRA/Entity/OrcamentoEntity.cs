@@ -12,8 +12,7 @@ namespace FlowShop_INFRA.Entity
         [Key]
         public int COD_ORCAMENTO { get; set; }
         public string NOME { get; set; }
-        public string LINK { get; set; }
-        public int COD_CATEGORIA { get; set; }
+        public string LINK { get; set; }        
         public int COD_COMPRA { get; set; }
     }
 }
