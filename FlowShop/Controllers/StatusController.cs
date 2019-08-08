@@ -14,9 +14,11 @@ namespace FlowShop.Controllers
     public class StatusController : ControllerBase
     {
         private readonly IStatusRepository _statusRepository;
-        public StatusController(IStatusRepository statusRepository)
+        private readonly ICompraRepository _compraRepository;
+        public StatusController(IStatusRepository statusRepository, ICompraRepository compraRepository)
         {
             _statusRepository = statusRepository;
+            _compraRepository = compraRepository;
         }
 
         // GET: api/Status
@@ -62,9 +64,19 @@ namespace FlowShop.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _statusRepository.Delete(id);
+            var perfil = _compraRepository.GetCompraByStatus(id).Count();
+
+            if (perfil != 0)
+            {
+                return BadRequest("Impossivel excluir status já referenciadas.");
+            }
+            else
+            {
+                _statusRepository.Delete(id);
+                return Ok();
+            }
         }
     }
 }

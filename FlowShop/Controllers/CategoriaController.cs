@@ -15,10 +15,12 @@ namespace FlowShop.Controllers
     {
 
         private readonly ICategoriaRepository _categoriaRepository;
+        private readonly ICompraRepository _compraRepository;
 
-        public CategoriaController(ICategoriaRepository categoriaRepository)
+        public CategoriaController(ICategoriaRepository categoriaRepository, ICompraRepository compraRepository)
         {
             _categoriaRepository = categoriaRepository;
+            _compraRepository = compraRepository;
         }
         // GET: api/Categoria
         [HttpGet]
@@ -64,9 +66,19 @@ namespace FlowShop.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _categoriaRepository.Delete(id);
+            var perfil = _compraRepository.GetCompraByCategoria(id).Count();
+
+            if (perfil != 0)
+            {
+                return BadRequest("Impossivel excluir categorias já referenciadas.");
+            }
+            else
+            {
+                _categoriaRepository.Delete(id);
+                return Ok();
+            }
         }
     }
 }
