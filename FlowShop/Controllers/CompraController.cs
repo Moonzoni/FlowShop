@@ -74,7 +74,7 @@ namespace FlowShop.Controllers
         }
 
         [HttpGet("Status/{stat}")]
-        public IEnumerable<CompraDTO> GetCombraByStatus(int stat)
+        public IEnumerable<CompraDTO> GetCompraByStatus(int stat)
         {
             return _compraRepository.GetCompraByStatus(stat).Select(x => new CompraDTO()
             {
@@ -92,9 +92,9 @@ namespace FlowShop.Controllers
         }
 
         [HttpGet("Categoria/{cat}")]
-        public IEnumerable<CompraDTO> GetCombraByCategoria(int cat)
+        public IEnumerable<CompraDTO> GetCompraByCategoria(int cat)
         {
-            return _compraRepository.GetCompraByStatus(cat).Select(x => new CompraDTO()
+            return _compraRepository.GetCompraByCategoria(cat).Select(x => new CompraDTO()
             {
                 APROVADO = x.APROVADO,
                 COD_COMPRA = x.COD_COMPRA,
@@ -110,7 +110,7 @@ namespace FlowShop.Controllers
         }
 
         [HttpGet("Descricao/{desc}")]
-        public IEnumerable<CompraDTO> GetCombraByDescricao(string desc)
+        public IEnumerable<CompraDTO> GetCompraByDescricao(string desc)
         {
             return _compraRepository.GetCompraByDescricao(desc).Select(x => new CompraDTO()
             {
@@ -124,6 +124,57 @@ namespace FlowShop.Controllers
                 USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
                 CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA),
                 ORCAMENTO = _orcamentoRepository.GetOrcamentoByCompra(x.COD_COMPRA).ToList()
+            });
+        }
+
+        [HttpGet("Titulo/{titul}")]
+        public IEnumerable<CompraDTO> GetCompraByTitulo(string titul)
+        {
+            return _compraRepository.GetCompraByTitulo(titul).Select(x => new CompraDTO()
+            {
+                APROVADO = x.APROVADO,
+                COD_COMPRA = x.COD_COMPRA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
+                DESCRICAO = x.DESCRICAO,
+                FINALIZADO = x.FINALIZADO,
+                TITULO = x.TITULO,
+                STATUS = _statusRepository.Get(x.COD_STATUS),
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+            });
+        }
+
+        [HttpGet("Aprovado/{aprovado}")]
+        public IEnumerable<CompraDTO> GetCompraByAprovado(bool aprovado)
+        {
+            return _compraRepository.GetCompraByAprovado(aprovado).Select(x => new CompraDTO()
+            {
+                APROVADO = x.APROVADO,
+                COD_COMPRA = x.COD_COMPRA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
+                DESCRICAO = x.DESCRICAO,
+                FINALIZADO = x.FINALIZADO,
+                TITULO = x.TITULO,
+                STATUS = _statusRepository.Get(x.COD_STATUS),
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
+            });
+        }
+
+        [HttpGet("Finalizado/{finalizado}")]
+        public IEnumerable<CompraDTO> GetCompraByFinalizado(bool finalizado)
+        {
+            return _compraRepository.GetCompraByFinalizado(finalizado).Select(x => new CompraDTO()
+            {
+                APROVADO = x.APROVADO,
+                COD_COMPRA = x.COD_COMPRA,
+                DATA_SOLICITACAO = x.DATA_SOLICITACAO,
+                DESCRICAO = x.DESCRICAO,
+                FINALIZADO = x.FINALIZADO,
+                TITULO = x.TITULO,
+                STATUS = _statusRepository.Get(x.COD_STATUS),
+                USUARIO = _usuarioRepository.Get(x.COD_USUARIO),
+                CATEGORIA = _categoriaRepository.Get(x.COD_CATEGORIA)
             });
         }
 

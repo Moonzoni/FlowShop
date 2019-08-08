@@ -10,8 +10,9 @@ namespace FlowShop_INFRA.Interface
     {
         IEnumerable<CompraEntity> GetCompraByStatus(int id);
         IEnumerable<CompraEntity> GetCompraByCategoria(int id);
-        IEnumerable<CompraEntity> GetCompraByDescricao(string texto);
+        IEnumerable<CompraEntity> GetCompraByDescricao(string desc);
+        IEnumerable<CompraEntity> GetCompraByTitulo(string titul);
+        IEnumerable<CompraEntity> GetCompraByAprovado(bool aprovado);
+        IEnumerable<CompraEntity> GetCompraByFinalizado(bool finalizado);
     }
-
-
 }

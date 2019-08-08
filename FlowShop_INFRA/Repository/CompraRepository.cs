@@ -25,9 +25,24 @@ namespace FlowShop_INFRA.Repository
             return _baseContext.Set<CompraEntity>().Where(x => x.COD_CATEGORIA == id).ToList();
         }
 
-        public IEnumerable<CompraEntity> GetCompraByDescricao(string texto)
+        public IEnumerable<CompraEntity> GetCompraByDescricao(string desc)
         {
-            return _baseContext.Set<CompraEntity>().Where(x => x.DESCRICAO.Contains(texto)).ToList();
+            return _baseContext.Set<CompraEntity>().Where(x => x.DESCRICAO.Contains(desc)).ToList();
+        }
+
+        public IEnumerable<CompraEntity> GetCompraByAprovado(bool aprovado)
+        {
+            return _baseContext.Set<CompraEntity>().Where(x => x.APROVADO == aprovado).ToList();
+        }
+
+        public IEnumerable<CompraEntity> GetCompraByFinalizado(bool finalizado)
+        {
+            return _baseContext.Set<CompraEntity>().Where(x => x.FINALIZADO == finalizado).ToList();
+        }
+
+        public IEnumerable<CompraEntity> GetCompraByTitulo(string titul)
+        {
+            return _baseContext.Set<CompraEntity>().Where(x => x.TITULO.Contains(titul)).ToList();
         }
     }
 }

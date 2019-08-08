@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FlowShop_INFRA.Entity;
 using FlowShop_INFRA.Interface;
@@ -14,9 +15,12 @@ namespace FlowShop.Controllers
     public class PerfilController : ControllerBase
     {
         private readonly IPerfilRepository _perfilRepository;
-        public PerfilController(IPerfilRepository perfilRepository)
+        private readonly IUsuarioRepository _usuarioRepository;
+        public PerfilController(IUsuarioRepository usuarioRepository, 
+            IPerfilRepository perfilRepository)
         {
             _perfilRepository = perfilRepository;
+            _usuarioRepository = usuarioRepository;
         }
 
         // GET: api/Perfil
@@ -62,9 +66,21 @@ namespace FlowShop.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _perfilRepository.Delete(id);
+            var perfil = _usuarioRepository.GetUsuarioPorPerfil(id).Count();
+            
+            if (perfil != 0)
+            {
+                return BadRequest("Impossivel excluir registros já referenciados.");
+
+            }
+            else
+            {
+                _perfilRepository.Delete(id);
+                return Ok();
+            }
+            
         }
     }
 }

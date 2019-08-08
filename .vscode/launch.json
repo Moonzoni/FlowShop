@@ -1,1 +1,2 @@
-select * from compra
+select * from usuario
+select * from perfil
