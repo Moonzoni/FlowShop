@@ -291,6 +291,7 @@ namespace FlowShop.Controllers
         public ActionResult Delete(int id)
         {
 
+
             var orc = _orcamentoRepository.GetOrcamentoByCompra(id).Count();
 
             if (orc != 0)
@@ -306,6 +307,7 @@ namespace FlowShop.Controllers
 
 
             
+
         }
     }
 }
