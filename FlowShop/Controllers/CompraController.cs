@@ -212,6 +212,10 @@ namespace FlowShop.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        //    if ()
+        //    {
+
+        //    }
             _compraRepository.Delete(id);
         }
     }
