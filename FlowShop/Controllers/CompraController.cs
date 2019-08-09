@@ -184,10 +184,10 @@ namespace FlowShop.Controllers
         {
             var comp = new CompraEntity()
             {
-                APROVADO = compra.APROVADO,               
+                APROVADO = null,               
                 DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
                 DESCRICAO = compra.DESCRICAO,
-                FINALIZADO = compra.FINALIZADO,
+                FINALIZADO = false,
                 TITULO = compra.TITULO,
                 COD_USUARIO = compra.USUARIO.COD_USUARIO,
                 COD_STATUS = compra.STATUS.COD_STATUS,
@@ -207,36 +207,107 @@ namespace FlowShop.Controllers
 
         // PUT: api/Compra/5
         [HttpPut("{id}")]
-        public CompraDTO Put([FromBody] CompraDTO compra)
+        public CompraEntity Put([FromBody] CompraEntity compra)
         {
             var comp = new CompraEntity()
             {
-                APROVADO = compra.APROVADO,
+               
                 COD_COMPRA = compra.COD_COMPRA,
                 DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
-                DESCRICAO = compra.DESCRICAO,
-                FINALIZADO = compra.FINALIZADO,
+                DESCRICAO = compra.DESCRICAO,               
                 TITULO = compra.TITULO,
-                COD_USUARIO = compra.USUARIO.COD_USUARIO,
-                COD_STATUS = compra.STATUS.COD_STATUS,
-                COD_CATEGORIA = compra.CATEGORIA.COD_CATEGORIA
+                COD_USUARIO = compra.COD_USUARIO,
+                COD_STATUS = compra.COD_STATUS,
+                COD_CATEGORIA = compra.COD_CATEGORIA,
+                //APROVADO = compra.APROVADO,
+                //FINALIZADO = compra.FINALIZADO,                
             };
-
-
-
             _compraRepository.Update(comp);
             return compra;
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        //    if ()
+
+
+        //// PUT: api/Compra/5
+        //[HttpPut("{id}")]
+        //public CompraEntity Put([FromBody] CompraEntity compra)
+        //{
+        //    var compra1 = _compraRepository.Get(id);
+        //    var comp = new CompraEntity()
         //    {
 
-        //    }
-            _compraRepository.Delete(id);
+        //        COD_COMPRA = compra.COD_COMPRA,
+        //        DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
+        //        DESCRICAO = compra.DESCRICAO,
+        //        TITULO = compra.TITULO,
+        //        COD_USUARIO = compra.COD_USUARIO,
+        //        //COD_STATUS = compra.COD_STATUS,
+        //        COD_CATEGORIA = compra.COD_CATEGORIA,
+        //        //APROVADO = compra.APROVADO,
+        //        //FINALIZADO = compra.FINALIZADO,                
+        //    };
+        //    comp.COD_STATUS = compra1.COD_STATUS;
+        //    _compraRepository.Update(comp);
+        //    return compra;
+        //}
+
+
+        [HttpPut("Aprovar/{id}/{cod_perfil}/{state}")]
+        public ActionResult<CompraEntity> Put([FromBody] CompraEntity comp, int cod_perfil, int id,bool state)
+        {
+            if (cod_perfil == 1 || cod_perfil ==3)
+            {
+                var compra = _compraRepository.GetCompraByCodigo(id);
+                compra.APROVADO = state;                
+                _compraRepository.Update(compra);
+                return compra;
+            }
+            else
+            {
+                return BadRequest("Você não tem permissão");
+            }            
+            
+        }
+
+        [HttpPut("Finalizar/{id}/{cod_perfil}/{state}")]
+        public ActionResult<CompraEntity> Puts([FromBody] CompraEntity comp, int cod_perfil, int id, bool state)
+        {
+            if (cod_perfil == 1)
+            {
+                var compra = _compraRepository.GetCompraByCodigo(id);
+                compra.FINALIZADO = state;
+                _compraRepository.Update(compra);
+                return compra;
+            }
+            else
+            {
+                return BadRequest("Você não tem permissão");
+            }
+
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+
+
+            var orc = _orcamentoRepository.GetOrcamentoByCompra(id).Count();
+
+            if (orc != 0)
+            {
+                return BadRequest("Impossivel excluir registros já referenciados.");
+            }
+            else
+            {
+                _compraRepository.Delete(id);
+                return Ok();
+            }
+
+
+
+            
+
         }
     }
 }

@@ -14,9 +14,11 @@ namespace FlowShop.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        public UsuarioController (IUsuarioRepository usuarioRepository)
+        private readonly ICompraRepository _compraRepository;
+        public UsuarioController (IUsuarioRepository usuarioRepository, ICompraRepository compraRepository)
         {
             _usuarioRepository = usuarioRepository;
+            _compraRepository = compraRepository;
         }
         // GET: api/Usuario
         [HttpGet]
@@ -61,9 +63,22 @@ namespace FlowShop.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-           _usuarioRepository.Delete(id);
+            var compra = _compraRepository.GetCompraByUsuario(id).Count();
+
+            if (compra != 0)
+            {
+                return BadRequest("Impossivel excluir registros já referenciados.");
+
+            }
+            else
+            {
+                _usuarioRepository.Delete(id);
+                return Ok();
+            }
+
+            
         }
     }
 }
