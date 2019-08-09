@@ -31,16 +31,16 @@ namespace FlowShop_INFRA
             }
         }
 
-        //public static bool LinkValidation(string link)
-        //{
-        //    if (Regex.IsMatch(link, "^(http|http(s)?://)?([\w-]+\.)+[\w-]+[.com|.in|.org]+(\[\?%&=]*)?"))
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
+        public static bool LinkValidation(string link)
+        {
+            if (Regex.IsMatch(link, @"^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&%\$#_]*)?$"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

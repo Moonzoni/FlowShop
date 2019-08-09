@@ -287,10 +287,6 @@ namespace FlowShop.Controllers
                 return Ok();
             }
 
-
-
-            
-
         }
     }
 }

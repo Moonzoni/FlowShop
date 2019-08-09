@@ -38,7 +38,12 @@ namespace FlowShop.Controllers
         // POST: api/Usuario
         [HttpPost]
         public ActionResult<UsuarioEntity> Post([FromBody] UsuarioEntity usuario)
-        { 
+        {
+            usuario.NOME = usuario.NOME.Trim(' ');
+            if (String.IsNullOrEmpty(usuario.NOME))
+            {
+                return BadRequest("Nome vazio");
+            }
             var nome = Validacoes.StringValidation(usuario.NOME);
             var email = Validacoes.EmailValidation(usuario.EMAIL);
 
@@ -56,6 +61,11 @@ namespace FlowShop.Controllers
         [HttpPut("{id}")]
         public ActionResult<UsuarioEntity> Put([FromBody] UsuarioEntity usuario)
         {
+            usuario.NOME = usuario.NOME.Trim(' ');
+            if (String.IsNullOrEmpty(usuario.NOME))
+            {
+                return BadRequest("Nome vazio");
+            }
             var nome = Validacoes.StringValidation(usuario.NOME);
             var email = Validacoes.EmailValidation(usuario.EMAIL);
 

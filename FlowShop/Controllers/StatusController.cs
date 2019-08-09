@@ -40,6 +40,13 @@ namespace FlowShop.Controllers
         [HttpPost]
         public ActionResult<StatusEntity> Post([FromBody] StatusEntity status)
         {
+
+            status.NOME = status.NOME.Trim(' ');
+            if (String.IsNullOrEmpty(status.NOME))
+            {
+                return BadRequest("Nome vazio");
+            }
+
             var nome = Validacoes.StringValidation(status.NOME);
 
             if (nome == true)
