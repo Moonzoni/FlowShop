@@ -19,9 +19,9 @@ namespace FlowShop_INFRA
             }
         }
 
-        public static bool IntValidation(string cod_compra)
+        public static bool EmailValidation(string email)
         {
-            if (Regex.IsMatch(cod_compra, "[0-9]"))
+            if (Regex.IsMatch(email, @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"))
             {
                 return true;
             }
@@ -30,5 +30,17 @@ namespace FlowShop_INFRA
                 return false;
             }
         }
+
+        //public static bool LinkValidation(string link)
+        //{
+        //    if (Regex.IsMatch(link, "^(http|http(s)?://)?([\w-]+\.)+[\w-]+[.com|.in|.org]+(\[\?%&=]*)?"))
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
     }
 }

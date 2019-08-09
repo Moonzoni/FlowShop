@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlowShop_INFRA;
 using FlowShop_INFRA.Entity;
 using FlowShop_INFRA.Interface;
 using Microsoft.AspNetCore.Http;
@@ -38,29 +39,33 @@ namespace FlowShop.Controllers
 
         // POST: api/Categoria
         [HttpPost]
-        public CategoriaEntity Post([FromBody] CategoriaEntity categoria)
+        public ActionResult<CategoriaEntity> Post([FromBody] CategoriaEntity categoria)
         {
-            return _categoriaRepository.Add(categoria);
+            var nome = Validacoes.StringValidation(categoria.NOME);
+
+            if (nome == true)
+            {
+                return _categoriaRepository.Add(categoria);
+            }
+            else
+            {
+                return BadRequest("Não foi possível atualizar esta categoria. Por favor, digite um nome válido.");
+            }
         }
 
         // PUT: api/Categoria/5
         [HttpPut("{id}")]
-
-        public ActionResult<CategoriaEntity> Put([FromBody] CategoriaEntity categoriaEntity)
+        public ActionResult<CategoriaEntity> Put([FromBody] CategoriaEntity categoria)
         {
-            try
+            var nome = Validacoes.StringValidation(categoria.NOME);
+
+            if (nome == true)
             {
-                return new OkObjectResult(_categoriaRepository.Update(categoriaEntity));
+                return _categoriaRepository.Update(categoria);
             }
-            catch (Exception e)
+            else
             {
-                return new BadRequestObjectResult(new
-                {
-                    Status = false,
-                    Message = e.Message,
-                    Stack = e.StackTrace,
-                    Description = "Erro"
-                });
+                return BadRequest("Não foi possível atualizar esta categoria. Por favor, digite um nome válido.");
             }
         }
 

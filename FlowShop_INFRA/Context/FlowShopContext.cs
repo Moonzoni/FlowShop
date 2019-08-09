@@ -19,7 +19,6 @@ namespace FlowShop_INFRA.Context
 
         protected override void OnModelCreating (ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<PerfilEntity>()
                 .HasKey(x => x.COD_PERFIL);
             modelBuilder.Entity<StatusEntity>()
@@ -32,7 +31,6 @@ namespace FlowShop_INFRA.Context
                 .HasKey(x => x.COD_ORCAMENTO);
             modelBuilder.Entity<UsuarioEntity>()
                 .HasKey(x => x.COD_USUARIO);
-
         }
     }
 }

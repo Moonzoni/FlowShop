@@ -39,12 +39,9 @@ namespace FlowShop.Controllers
         [HttpPost]
         public ActionResult<OrcamentoEntity> Post([FromBody] OrcamentoEntity orcamento)
         {
-            var result = orcamento.COD_COMPRA.ToString();
-
-            var cod = Validacoes.IntValidation(result);
             var nome = Validacoes.StringValidation(orcamento.NOME);
 
-            if (nome && cod == true)
+            if (nome == true)
             {
                 return Ok(_orcamentoRepository.Add(orcamento));
             }
@@ -58,12 +55,9 @@ namespace FlowShop.Controllers
         [HttpPut("{id}")]
         public ActionResult<OrcamentoEntity> Put([FromBody] OrcamentoEntity orcamento)
         {
-            var result = orcamento.COD_COMPRA.ToString();
-
-            var cod = Validacoes.IntValidation(result);
             var nome = Validacoes.StringValidation(orcamento.NOME);
 
-            if (nome && cod == true)
+            if (nome == true)
             {
                     return Ok(_orcamentoRepository.Update(orcamento));
             }
