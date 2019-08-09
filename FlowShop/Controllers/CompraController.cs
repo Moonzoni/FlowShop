@@ -207,61 +207,42 @@ namespace FlowShop.Controllers
 
         // PUT: api/Compra/5
         [HttpPut("{id}")]
-        public CompraEntity Put([FromBody] CompraEntity compra)
+        public CompraEntity Put([FromBody] CompraEntity compraEntity, int id)
         {
-            var comp = new CompraEntity()
-            {
-               
-                COD_COMPRA = compra.COD_COMPRA,
-                DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
-                DESCRICAO = compra.DESCRICAO,               
-                TITULO = compra.TITULO,
-                COD_USUARIO = compra.COD_USUARIO,
-                COD_STATUS = compra.COD_STATUS,
-                COD_CATEGORIA = compra.COD_CATEGORIA,
-                //APROVADO = compra.APROVADO,
-                //FINALIZADO = compra.FINALIZADO,                
-            };
-            _compraRepository.Update(comp);
+            var compra = _compraRepository.Get(id);
+            compra.TITULO = compraEntity.TITULO;
+            compra.DESCRICAO = compraEntity.DESCRICAO;
+
+            _compraRepository.Update(compra);
             return compra;
         }
 
-
-
-        //// PUT: api/Compra/5
-        //[HttpPut("{id}")]
-        //public CompraEntity Put([FromBody] CompraEntity compra)
-        //{
-        //    var compra1 = _compraRepository.Get(id);
-        //    var comp = new CompraEntity()
-        //    {
-
-        //        COD_COMPRA = compra.COD_COMPRA,
-        //        DATA_SOLICITACAO = compra.DATA_SOLICITACAO,
-        //        DESCRICAO = compra.DESCRICAO,
-        //        TITULO = compra.TITULO,
-        //        COD_USUARIO = compra.COD_USUARIO,
-        //        //COD_STATUS = compra.COD_STATUS,
-        //        COD_CATEGORIA = compra.COD_CATEGORIA,
-        //        //APROVADO = compra.APROVADO,
-        //        //FINALIZADO = compra.FINALIZADO,                
-        //    };
-        //    comp.COD_STATUS = compra1.COD_STATUS;
-        //    _compraRepository.Update(comp);
-        //    return compra;
-        //}
-
-
         [HttpPut("Aprovar/{id}/{cod_perfil}/{state}")]
-        public ActionResult<CompraEntity> Put([FromBody] CompraEntity comp, int cod_perfil, int id,bool state)
+        public ActionResult<CompraEntity> PutAprovar([FromBody] CompraEntity comp, int cod_perfil, int id,bool state)
         {
-            if (cod_perfil == 1 || cod_perfil ==3)
+            if (cod_perfil == 1 || cod_perfil ==4)
             {
                 var compra = _compraRepository.GetCompraByCodigo(id);
-                compra.APROVADO = state;                
-                _compraRepository.Update(compra);
-                return compra;
+                if (compra.FINALIZADO == false)
+                {
+                    compra.APROVADO = state;
+                    if (state == true)
+                    {
+                        compra.COD_STATUS = 2;
+                    }                    
+                    else if (state != true)
+                    {
+                        compra.COD_STATUS = 3;
+                    }
+                    _compraRepository.Update(compra);
+                    return Ok(compra);
+                }
+                else
+                {
+                    return BadRequest("Compra já finalizada, não pode ser alterada");
+                }
             }
+
             else
             {
                 return BadRequest("Você não tem permissão");
@@ -270,12 +251,14 @@ namespace FlowShop.Controllers
         }
 
         [HttpPut("Finalizar/{id}/{cod_perfil}/{state}")]
-        public ActionResult<CompraEntity> Puts([FromBody] CompraEntity comp, int cod_perfil, int id, bool state)
+        public ActionResult<CompraEntity> PutFinalizar([FromBody] CompraEntity comp, int cod_perfil, int id, bool state)
         {
-            if (cod_perfil == 1)
+            if (cod_perfil == 1 || cod_perfil == 3 || cod_perfil == 4 )
             {
                 var compra = _compraRepository.GetCompraByCodigo(id);
+                
                 compra.FINALIZADO = state;
+                compra.COD_STATUS = 4;
                 _compraRepository.Update(compra);
                 return compra;
             }
