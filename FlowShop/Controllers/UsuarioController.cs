@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlowShop_INFRA;
 using FlowShop_INFRA.Entity;
 using FlowShop_INFRA.Interface;
 using Microsoft.AspNetCore.Http;
@@ -36,28 +37,35 @@ namespace FlowShop.Controllers
 
         // POST: api/Usuario
         [HttpPost]
-        public UsuarioEntity Post([FromBody] UsuarioEntity usuario)
-        {
-            return _usuarioRepository.Add(usuario);
+        public ActionResult<UsuarioEntity> Post([FromBody] UsuarioEntity usuario)
+        { 
+            var nome = Validacoes.StringValidation(usuario.NOME);
+            var email = Validacoes.EmailValidation(usuario.EMAIL);
+
+            if (nome && email == true)
+            {
+                return _usuarioRepository.Add(usuario);
+            }
+            else
+            {
+                return BadRequest("Não foi possível atualizar este usuário. Por favor, digite um nome ou email válido.");
+            }
         }
 
         // PUT: api/Usuario/5
         [HttpPut("{id}")]
         public ActionResult<UsuarioEntity> Put([FromBody] UsuarioEntity usuario)
         {
-            try
+            var nome = Validacoes.StringValidation(usuario.NOME);
+            var email = Validacoes.EmailValidation(usuario.EMAIL);
+
+            if (email && nome == true)
             {
                 return new OkObjectResult(_usuarioRepository.Update(usuario));
             }
-            catch (Exception e)
+            else
             {
-                return new BadRequestObjectResult(new
-                {
-                    Status = false,
-                    Message = e.Message,
-                    Stack = e.StackTrace,
-                    Description = "Errrouuuuuuuuu"
-                });
+                return BadRequest("Não foi possível atualizar este usuário. Por favor, digite um nome válido.");
             }
         }
 
@@ -70,15 +78,12 @@ namespace FlowShop.Controllers
             if (compra != 0)
             {
                 return BadRequest("Impossivel excluir registros já referenciados.");
-
             }
             else
             {
                 _usuarioRepository.Delete(id);
                 return Ok();
             }
-
-            
         }
     }
 }

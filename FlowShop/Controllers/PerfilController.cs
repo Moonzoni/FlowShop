@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FlowShop_INFRA;
 using FlowShop_INFRA.Entity;
 using FlowShop_INFRA.Interface;
 using Microsoft.AspNetCore.Http;
@@ -39,28 +40,33 @@ namespace FlowShop.Controllers
 
         // POST: api/Perfil
         [HttpPost]
-        public PerfilEntity Post([FromBody] PerfilEntity perfil)
+        public ActionResult<PerfilEntity> Post([FromBody] PerfilEntity perfil)
         {
-            return _perfilRepository.Add(perfil);
+            var nome = Validacoes.StringValidation(perfil.NOME);
+
+            if (nome == true)
+            {
+                return _perfilRepository.Add(perfil);
+            }
+            else
+            {
+                return BadRequest("Não foi possível atualizar este perfil. Por favor, digite um nome válido.");
+            }
         }
 
         // PUT: api/Perfil/5
         [HttpPut("{id}")]
         public ActionResult<PerfilEntity> Put([FromBody] PerfilEntity perfil)
         {
-            try
+            var nome = Validacoes.StringValidation(perfil.NOME);
+
+            if (nome == true)
             {
-                return new OkObjectResult(_perfilRepository.Update(perfil));
+                return _perfilRepository.Update(perfil);
             }
-            catch (Exception e)
+            else
             {
-                return new BadRequestObjectResult(new
-                {
-                    Status = false,
-                    Message = e.Message,
-                    Stack = e.StackTrace,
-                    Description = "Errou"
-                });
+                return BadRequest("Não foi possível atualizar este perfil. Por favor, digite um nome válido.");
             }
         }
 

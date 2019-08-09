@@ -1,10 +1,13 @@
 ﻿using FlowShop_INFRA.Entity;
 using FlowShop_INFRA.Interface;
+using FlowShop;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using FlowShop_INFRA;
 
 namespace FlowShop.Controllers
 {
@@ -25,7 +28,6 @@ namespace FlowShop.Controllers
             return _orcamentoRepository.GetAll(); 
         }
 
-
         // GET: api/Perfil/5
         [HttpGet("{id}")]
         public OrcamentoEntity Get(int id)
@@ -35,32 +37,35 @@ namespace FlowShop.Controllers
 
         // POST: api/Perfil
         [HttpPost]
-        public OrcamentoEntity Post([FromBody] OrcamentoEntity orcamento)
+        public ActionResult<OrcamentoEntity> Post([FromBody] OrcamentoEntity orcamento)
         {
-            return _orcamentoRepository.Add(orcamento);
+            var nome = Validacoes.StringValidation(orcamento.NOME);
+
+            if (nome == true)
+            {
+                return Ok(_orcamentoRepository.Add(orcamento));
+            }
+            else
+            {
+                return BadRequest("Não foi possível atualizar este orçamento. Por favor, digite um nome válido.");
+            }
         }
 
         // PUT: api/Perfil/5
         [HttpPut("{id}")]
         public ActionResult<OrcamentoEntity> Put([FromBody] OrcamentoEntity orcamento)
         {
-            try
-            {
-                return new OkObjectResult(_orcamentoRepository.Update(orcamento));
-            }
-            catch (Exception e)
-            {
-                return new BadRequestObjectResult(new
-                {
-                    Status = false,
-                    Message = e.Message,
-                    Stack = e.StackTrace,
-                    Description = "Errou"
-                });
-            }
+            var nome = Validacoes.StringValidation(orcamento.NOME);
 
+            if (nome == true)
+            {
+                    return Ok(_orcamentoRepository.Update(orcamento));
+            }
+            else
+            {
+                return BadRequest("Não foi possível atualizar este orçamento. Por favor, digite um nome válido.");
+            }
         }
-
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
@@ -70,4 +75,3 @@ namespace FlowShop.Controllers
         }
     }
 }
-
