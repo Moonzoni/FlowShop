@@ -46,7 +46,7 @@ namespace FlowShop.Controllers
 
             if (nome == true)
             {
-                return _perfilRepository.Add(perfil);
+                return Ok(_perfilRepository.Add(perfil));
             }
             else
             {
@@ -62,7 +62,7 @@ namespace FlowShop.Controllers
 
             if (nome == true)
             {
-                return _perfilRepository.Update(perfil);
+                return Ok(_perfilRepository.Update(perfil));
             }
             else
             {

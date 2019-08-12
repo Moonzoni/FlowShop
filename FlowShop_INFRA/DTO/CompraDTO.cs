@@ -12,8 +12,7 @@ namespace FlowShop_INFRA.DTO
         public string DESCRICAO { get; set; }
         public StatusEntity STATUS { get; set; }
         public DateTime DATA_SOLICITACAO { get; set; }
-        public UsuarioEntity USUARIO { get; set; }
-        
+        public UsuarioEntity USUARIO { get; set; }        
         public bool? APROVADO { get; set; }
         public bool FINALIZADO { get; set; }
         public CategoriaEntity CATEGORIA { get; set; }

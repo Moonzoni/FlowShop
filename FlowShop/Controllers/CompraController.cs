@@ -180,7 +180,7 @@ namespace FlowShop.Controllers
 
         // POST: api/Compra
         [HttpPost]
-        public CompraDTO Post([FromBody] CompraDTO compra)
+        public ActionResult<CompraDTO> Post([FromBody] CompraDTO compra)
         {
             var comp = new CompraEntity()
             {
@@ -190,19 +190,27 @@ namespace FlowShop.Controllers
                 FINALIZADO = false,
                 TITULO = compra.TITULO,
                 COD_USUARIO = compra.USUARIO.COD_USUARIO,
-                COD_STATUS = compra.STATUS.COD_STATUS,
+                COD_STATUS = 1,
                 COD_CATEGORIA = compra.CATEGORIA.COD_CATEGORIA
             };
+
+            comp.TITULO = comp.TITULO.Trim(' ');
+            if (string.IsNullOrEmpty(comp.TITULO))
+            {
+
+                return BadRequest("Por Favor preencha um título válido");
+                
+            }
+
             var newComp = _compraRepository.Add(comp);
             compra.COD_COMPRA = newComp.COD_COMPRA;
             for (int i = 0; i < compra.ORCAMENTO.Count; i++)
             {
                 compra.ORCAMENTO.ToArray()[i].COD_COMPRA = compra.COD_COMPRA;
                 _orcamentoRepository.Add(compra.ORCAMENTO.ToArray()[i]);
-            }
-           
+            }           
 
-            return compra;
+            return Ok(comp);
         }
 
         // PUT: api/Compra/5

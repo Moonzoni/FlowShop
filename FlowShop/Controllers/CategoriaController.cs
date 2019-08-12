@@ -54,7 +54,7 @@ namespace FlowShop.Controllers
         }
 
         // PUT: api/Categoria/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public ActionResult<CategoriaEntity> Put([FromBody] CategoriaEntity categoria)
         {
             var nome = Validacoes.StringValidation(categoria.NOME);
